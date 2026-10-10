@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>نیلوفر، یه چیزی هست که باید بدونی</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0916; --ink:#f7f1fa; --soft:#b8a9c7; --rose:#f47fa4; --peach:#ffb48f; --violet:#7a5cff;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;height:100%;background:var(--bg);color:var(--ink);overflow-x:hidden;
+  font-family:"Vazirmatn",Tahoma,system-ui,sans-serif}
+
+/* پس‌زمینه زنده */
+.aura{position:fixed;inset:0;overflow:hidden;z-index:0}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.5;animation:drift 18s ease-in-out infinite alternate}
+.b1{width:60vmax;height:60vmax;background:var(--violet);top:-20vmax;right:-15vmax;opacity:.38}
+.b2{width:55vmax;height:55vmax;background:var(--rose);bottom:-25vmax;left:-20vmax;opacity:.32;animation-duration:22s}
+.b3{width:35vmax;height:35vmax;background:var(--peach);top:35%;left:30%;opacity:.12;animation-duration:26s}
+@keyframes drift{to{transform:translate(8vmax,-6vmax) scale(1.15)}}
+.grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.07;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")}
+
+/* نقطه‌های پیشرفت */
+#dots{position:fixed;top:calc(env(safe-area-inset-top,0px) + 18px);left:0;right:0;display:flex;justify-content:center;gap:8px;z-index:3}
+#dots i{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.18);transition:all .5s}
+#dots i.on{width:22px;border-radius:6px;background:linear-gradient(90deg,var(--rose),var(--peach))}
+
+#stage{position:relative;z-index:2;min-height:100%;display:flex;align-items:center;justify-content:center;padding:70px 24px 40px;text-align:center}
+.step{display:none;width:100%;max-width:430px;flex-direction:column;align-items:center;gap:26px}
+.step.on{display:flex;animation:in .9s cubic-bezier(.2,.7,.2,1) both}
+.step.out{display:flex;animation:out .35s ease both}
+@keyframes in{from{opacity:0;transform:translateY(18px) scale(.98);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+@keyframes out{to{opacity:0;transform:translateY(-12px);filter:blur(6px)}}
+h1,p{margin:0}
+.big{font-size:clamp(1.6rem,6.6vw,2.2rem);font-weight:800;line-height:1.85;
+  background:linear-gradient(180deg,#fff 20%,#f9cfe0 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.mid{font-size:1.15rem;line-height:2.1;color:var(--soft);font-weight:300}
+.emoji{font-size:3rem;filter:drop-shadow(0 0 18px rgba(244,127,164,.6))}
+
+button{font:inherit;cursor:pointer;border:0;border-radius:18px;padding:16px 30px;font-size:1.1rem;font-weight:600;
+  width:100%;max-width:330px;color:#2a1030;position:relative;overflow:hidden;
+  background:linear-gradient(120deg,var(--rose),var(--peach));
+  box-shadow:0 10px 34px -8px rgba(244,127,164,.65),inset 0 1px 0 rgba(255,255,255,.5);
+  transition:transform .2s,box-shadow .3s,font-size .45s cubic-bezier(.2,.7,.2,1),padding .45s,max-width .45s,opacity .5s,max-height .5s}
+button::after{content:"";position:absolute;top:0;bottom:0;width:40%;left:-60%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:shine 3.4s ease-in-out infinite}
+@keyframes shine{0%,60%{left:-60%}100%{left:130%}}
+button:active{transform:scale(.96)}
+button.ghost{background:rgba(255,255,255,.06);color:var(--ink);box-shadow:none;border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(10px)}
+button.ghost::after{display:none}
+button:focus-visible,a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.hide{opacity:0;pointer-events:none;transition:opacity .8s}
+
+/* کارت‌ها */
+.cards{display:flex;flex-direction:column;gap:14px;width:100%}
+.card{display:flex;align-items:center;gap:14px;text-align:right;line-height:1.9;font-size:1.05rem;
+  background:linear-gradient(135deg,rgba(255,255,255,.1),rgba(255,255,255,.03));
+  border:1px solid rgba(255,255,255,.14);border-radius:22px;padding:16px 18px;backdrop-filter:blur(14px);
+  box-shadow:0 20px 40px -20px rgba(0,0,0,.6);
+  opacity:0;transform:translateY(22px) scale(.97);transition:opacity .8s,transform .8s cubic-bezier(.2,.7,.2,1)}
+.card b{font-size:1.7rem;font-weight:400;flex:none}
+.card.show{opacity:1;transform:none}
+
+/* پیکاپ‌لاین */
+.lines{display:flex;flex-direction:column;gap:6px;min-height:230px;justify-content:center}
+.ln{font-size:clamp(1.25rem,5.4vw,1.6rem);font-weight:600;line-height:1.9;opacity:0;transform:translateY(12px);filter:blur(6px);
+  transition:all .9s cubic-bezier(.2,.7,.2,1)}
+.ln.show{opacity:1;transform:none;filter:none}
+.ln.hot{font-weight:800;font-size:clamp(1.4rem,6vw,1.85rem);
+  background:linear-gradient(100deg,var(--rose),var(--peach),var(--rose));background-size:200% auto;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:flow 3s linear infinite}
+@keyframes flow{to{background-position:200% center}}
+
+/* افکت */
+.heart{font-size:4rem;animation:beat 1.4s ease-in-out infinite;filter:drop-shadow(0 0 26px rgba(244,127,164,.8))}
+@keyframes beat{0%,100%{transform:scale(1)}20%{transform:scale(1.22)}40%{transform:scale(1)}60%{transform:scale(1.14)}}
+.row{display:flex;flex-direction:column;gap:14px;width:100%;align-items:center}
+.contact{display:inline-block;padding:16px 28px;border-radius:18px;color:#fff;font-weight:600;font-size:1.15rem;text-decoration:none;
+  direction:ltr;word-break:break-all;background:rgba(255,255,255,.08);border:1px solid rgba(244,127,164,.6);
+  box-shadow:0 0 30px -4px rgba(244,127,164,.5);backdrop-filter:blur(10px)}
+#fx{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:4}
+.fl{position:absolute;bottom:-50px;animation:up linear forwards}
+@keyframes up{to{transform:translateY(-115vh) rotate(24deg);opacity:0}}
+.burst{position:absolute;left:50%;top:42%;animation:pop 1.3s ease-out forwards}
+@keyframes pop{from{transform:translate(-50%,-50%) scale(.3);opacity:1}to{transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(1.2);opacity:0}}
+@media (prefers-reduced-motion:reduce){.blob,button::after,.heart,.ln.hot{animation:none}.step.on,.step.out{animation:none}.fl,.burst{display:none}.card,.ln{transition:none}}
+</style>
+</head>
+<body>
+<div class="aura" aria-hidden="true"><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+<div class="grain" aria-hidden="true"></div>
+<div id="dots" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+<div id="fx" aria-hidden="true"></div>
+
+<main id="stage">
+
+  <section class="step on" id="s1">
+    <div class="emoji">🪷</div>
+    <p class="big">سلام نیلوفر :)</p>
+    <p class="mid">اگه داری این رو می‌بینی،<br>یعنی یه چیزی شده...</p>
+    <button data-next="s2">چی شده؟ 👀</button>
+  </section>
+
+  <section class="step" id="s2">
+    <p class="big">اتفاق بزرگی نیست؛ فقط پروفایلت رو دیدم و از اون موقع چند بار بهش فکر کردم.</p>
+    <button data-next="s3">بعدش چی شد؟ 👀</button>
+  </section>
+
+  <section class="step" id="s3">
+    <div class="cards">
+      <div class="card"><b>✨</b><span>فقط پروفایل تو بود که توجهم رو جلب کرد.</span></div>
+      <div class="card"><b>😄</b><span>حال‌وهوای پروفایلت بی‌اختیار لبخند آورد رو لبم.</span></div>
+      <div class="card"><b>💬</b><span>و با خودم گفتم: یه بار شجاع باشم، به‌جای اینکه بعداً بپرسم «اگه می‌گفتم چی؟»</span></div>
+    </div>
+    <button id="hint" class="hide" data-next="pick">می‌دونی چی می‌خوام بگم؟ 😏</button>
+  </section>
+
+  <section class="step" id="pick">
+    <div class="lines">
+      <p class="ln">من معمولاً زود یادم می‌ره کی رو دیدم...</p>
+      <p class="ln">ولی تو رو نه، نیلوفر.</p>
+      <p class="ln">یا حافظه‌م خرابه، یا تو خاصی.</p>
+      <p class="ln hot">فکر کنم گزینه‌ی دوم 😌</p>
+    </div>
+    <button id="pickBtn" class="hide" data-next="s4">بگو دیگه 🥺</button>
+  </section>
+
+  <section class="step" id="s4">
+    <div class="heart">💗</div>
+    <p class="big">آره... خودتی نیلوفر :)</p>
+    <p class="mid hide" id="s4b">راستش پروفایلت رو دیدم و ازت خوشم اومد.<br>نمی‌خواستم یهو یه پیام معمولی بدم و معذبت کنم، برای همین این راه رو انتخاب کردم.</p>
+    <button id="s4btn" class="hide" data-next="s5">بعدش؟ 💭</button>
+  </section>
+
+  <section class="step" id="s5">
+    <p class="big">نیلوفر، اگه تو هم دوست داشتی بیشتر آشنا بشیم...</p>
+    <div class="row">
+      <button id="yes">💬 آره، بیا حرف بزنیم</button>
+      <button id="no" class="ghost">🙂 ممنون، ولی نه</button>
+    </div>
+  </section>
+
+  <section class="step" id="yesView">
+    <div class="heart">💗</div>
+    <p class="big">پس فکر کنم اینجا شروع یه آشنایی جالب باشه، نیلوفر :)</p>
+    <p class="mid">از اینجا می‌تونی بهم پیام بدی:</p>
+    <a class="contact" id="contactLink" href="#"></a>
+  </section>
+
+  <section class="step" id="noView">
+    <div class="emoji">🤍</div>
+    <p class="big">کاملاً قابل احترامه ❤️</p>
+    <p class="mid">ممنون که تا آخرش اومدی نیلوفر. اگه مزاحمت شدم، ببخش.</p>
+  </section>
+
+</main>
+<script>
+// ✏️ این دو خط رو با اطلاعات خودت عوض کن
+var CONTACT_TEXT = "@arsh_i_a";             // چیزی که نمایش داده میشه
+var CONTACT_LINK = "https://t.me/arsh_i_a"; // لینکی که با کلیک باز میشه
+
+var order = ["s1","s2","s3","pick","s4","s5"];
+var dots = document.querySelectorAll("#dots i");
+var cur = document.getElementById("s1");
+var calm = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function show(el, t){ setTimeout(function(){ el.classList.add("show"); }, t); }
+function unhide(id, t){ setTimeout(function(){ document.getElementById(id).classList.remove("hide"); }, t); }
+
+function go(id){
+  var old = cur, next = document.getElementById(id);
+  old.classList.remove("on"); old.classList.add("out");
+  setTimeout(function(){
+    old.classList.remove("out");
+    next.classList.add("on"); cur = next;
+    var i = order.indexOf(id);
+    if(i > -1) dots.forEach(function(d,k){ d.classList.toggle("on", k===i); });
+    if(id==="s3") reveal3();
+    if(id==="pick") revealPick();
+    if(id==="s4"){ unhide("s4b",1400); unhide("s4btn",3200); burst(); rain(10); }
+    if(id==="yesView") rain(26);
+  }, calm ? 0 : 350);
+}
+function reveal3(){
+  var cs = cur.querySelectorAll(".card");
+  cs.forEach(function(c,i){ show(c, 500 + i*1200); });
+  unhide("hint", 500 + cs.length*1200);
+}
+function revealPick(){
+  var ls = cur.querySelectorAll(".ln");
+  var t = 700;
+  ls.forEach(function(l,i){ show(l, t); t += (i===1 ? 1900 : 1500); });
+  unhide("pickBtn", t + 300);
+}
+function rain(n){
+  if(calm) return;
+  var box = document.getElementById("fx"), em = ["💗","🪷","💕","🩷","✨"];
+  for(var i=0;i<n;i++){
+    var s = document.createElement("span");
+    s.className = "fl"; s.textContent = em[i%em.length];
+    s.style.left = Math.random()*100 + "%";
+    s.style.fontSize = (14 + Math.random()*22) + "px";
+    s.style.animationDuration = (5 + Math.random()*5) + "s";
+    s.style.animationDelay = (Math.random()*2.5) + "s";
+    box.appendChild(s);
+    setTimeout(function(el){ return function(){ el.remove(); }; }(s), 11000);
+  }
+}
+function burst(){
+  if(calm) return;
+  var box = document.getElementById("fx");
+  for(var i=0;i<14;i++){
+    var s = document.createElement("span"), a = (i/14)*Math.PI*2, d = 90 + Math.random()*90;
+    s.className = "burst"; s.textContent = i%2 ? "💗" : "✨";
+    s.style.setProperty("--x", Math.cos(a)*d + "px"); s.style.setProperty("--y", Math.sin(a)*d + "px");
+    box.appendChild(s);
+    setTimeout(function(el){ return function(){ el.remove(); }; }(s), 1500);
+  }
+}
+document.querySelectorAll("[data-next]").forEach(function(b){
+  b.addEventListener("click", function(){ go(b.getAttribute("data-next")); });
+});
+document.getElementById("yes").addEventListener("click", function(){ go("yesView"); });
+var noCount = 0, MAX_NO = 7;
+document.getElementById("no").addEventListener("click", function(){
+  noCount++;
+  var y = document.getElementById("yes"), n = document.getElementById("no");
+  if(noCount >= MAX_NO){
+    n.style.opacity = 0; n.style.pointerEvents = "none"; n.style.maxHeight = 0; n.style.padding = 0; n.style.border = 0; n.style.margin = 0;
+    setTimeout(function(){ n.style.display = "none"; }, 500);
+    y.style.maxWidth = "100%"; y.style.fontSize = "1.9rem"; y.style.padding = "26px 20px";
+    rain(14);
+    return;
+  }
+  y.style.fontSize = (1.1 + noCount*0.13) + "rem";
+  y.style.padding = (16 + noCount*2.6) + "px 30px";
+  y.style.maxWidth = Math.min(330 + noCount*14, 430) + "px";
+  n.style.fontSize = Math.max(0.7, 1.1 - noCount*0.06) + "rem";
+  n.style.opacity = Math.max(0.45, 1 - noCount*0.09);
+  n.style.padding = Math.max(8, 16 - noCount*1.1) + "px 24px";
+});
+var a = document.getElementById("contactLink");
+a.textContent = CONTACT_TEXT; a.href = CONTACT_LINK; a.target = "_blank"; a.rel = "noopener";
+</script>
+</body>
+</html>
